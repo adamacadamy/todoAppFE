@@ -1,35 +1,65 @@
-const fetchAndPapulateTasks = async () => {
-    
-    const tasks = await getTasksRequest();
 
-    tasks.forEach((task) => {
-        const tasksContainer = document.querySelector('.tasks-list');
-        const taskElement = document.createElement('li');
-        const taskNameSpan = document.createElement('span');
-        const linksContainer = document.createElement('span');
-        const editLink = document.createElement('a');
-        
-        // Display checkmark if task is completed, empty string otherwise
-        taskNameSpan.textContent = task.is_completed ? '✓' : '';
-        taskElement.textContent = task.task; // Task description
-        
-        linksContainer.classList.add('task-links');
-        
-        editLink.href = `${window.env.PAGES.TODO_EDIT}/?id=${task.id}`;
-        editLink.textContent = 'Edit';
-        
-        const deleteLink = document.createElement('a');
-        deleteLink.href = `${window.env.PAGES.TODO_EDIT}/?id=${task.id}`; // Consider a separate delete URL if needed
-        deleteLink.textContent = 'Delete';
-        deleteLink.classList.add('delete-btn');
-    
-        // Append elements
-        taskElement.appendChild(taskNameSpan); // Checkmark or empty
-        linksContainer.appendChild(editLink);
-        linksContainer.appendChild(deleteLink);
-        
-        taskElement.appendChild(linksContainer); // Add links to the task element
-        tasksContainer.appendChild(taskElement);
-    }); 
-}
 
+ 
+
+document.addEventListener('DOMContentLoaded', () => { 
+    const taskId = getQueryParam('id');
+    
+    const taskForm = document.querySelector('#todo-form'); 
+    const fieldsToValidate = [{ 'field': 'task', "validator": validateText }];
+
+    fieldsToValidate.forEach(({ field, validator }) => {
+        const input = document.getElementById(field);
+        input.addEventListener('input',  (event) => { 
+            showValidationMessage(input, validator(event.target.value));
+        });
+        input.addEventListener('blur',  (event) => { 
+            showValidationMessage(input, validator(event.target.value));
+        });
+    });
+
+    taskForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const submitButton = document.querySelector('#submit');
+        const taskNameElement= document.querySelector('#task');
+        const isTakenElement= document.querySelector('#is_completed');   
+        
+        submitButton.disabled = true;
+        submitButton.value = 'Updating task...';
+        
+        const task = taskNameElement.value;
+        const is_completed = isTakenElement.checked
+
+        const taskNameValidation = validateText(task);
+
+        showValidationMessage(taskNameElement, taskNameValidation);
+
+        if (!taskNameValidation.isValid) {
+            showFormError('Please fix the errors below', taskForm);
+            return;
+        }
+
+        const payload =  { task, is_completed };
+
+        try {
+
+            const addTaskStatus = taskId ? await updateTaskRequest(taskId, payload) : await addTaskRequest(payload);
+
+            if (!addTaskStatus) {   
+                showFormError('Invalid credentials' , taskForm );
+                return;
+            }
+            window.location.href = window.env.PAGES.DASHBOARD;
+        } catch (error) {
+            console.error('Error:', error);
+            validateionData = { isValid: false, message: error.message };
+            showFormError(error.message, taskForm );
+        } 
+        
+    submitButton.disabled = false;
+    submitButton.value = 'Update task';
+    });
+
+
+});

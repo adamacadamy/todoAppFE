@@ -45,16 +45,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!usernameValidation.isValid || !passwordValidation.isValid || !emailValidation.isValid) {
             showFormError('Please fix the errors below', registrationForm);
             return;
-        }
-
-        const method = 'POST';
-        const headers = { 'Content-Type': 'application/json' };
-        const body = JSON.stringify({ username, password, email });
-        const request_config = { method, headers, body };   
-        
+        } 
+        const payload =  { username, password, email }; 
         try {
 
-            const registrationStatus = await registrationRequest(request_config);
+            const registrationStatus = await registrationRequest(payload);
             if (!registrationStatus) { 
                 showFormError('Invalid payload', registrationForm);
                 return;

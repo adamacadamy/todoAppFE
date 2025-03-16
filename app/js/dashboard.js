@@ -4,8 +4,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         const addTaskForm = document.querySelector('#add-task-form'); 
         const fieldsToValidate = [{ 'field': 'task', "validator": validateText }]
 
-    
-
         await fetchAndPapulateTasks()
        
         getTasksRequest().then((tasks) => {

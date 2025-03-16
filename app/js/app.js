@@ -114,4 +114,57 @@ document.addEventListener('DOMContentLoaded', () => {
         });
      }
 });
- 
+ // Function to get the query parameter value by name
+const getQueryParam = (param) => {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+};
+
+const fetchAndPapulateTasks = async () => {
+    
+    const tasks = await getTasksRequest();
+
+    tasks.forEach((task) => {
+        const tasksContainer = document.querySelector('.tasks-list');
+        const taskElement = document.createElement('li');
+        const taskNameSpan = document.createElement('span');
+        const linksContainer = document.createElement('span');
+        const editLink = document.createElement('a');
+        const elementId =  `id-${task.id}`;
+        // Display checkmark if task is completed, empty string otherwise
+        taskNameSpan.textContent = task.is_completed ? '✓' : '';
+        taskElement.textContent = task.task; // Task description
+        taskElement.setAttribute('id', elementId);
+        
+        linksContainer.classList.add('task-links');
+        
+        editLink.href = `${window.env.PAGES.TODO_EDIT}?id=${task.id}`;
+        editLink.textContent = 'Edit';
+        
+        const deleteLink = document.createElement('a');
+        deleteLink.href = `${window.env.PAGES.TODO_EDIT}?id=${task.id}`; // Consider a separate delete URL if needed
+        deleteLink.setAttribute('data-task-id', task.id);
+        deleteLink.setAttribute('parent-id', elementId);
+        deleteLink.textContent = 'Delete';
+        deleteLink.classList.add('delete-btn');
+
+        deleteLink.addEventListener('click', async (event) => {
+            event.preventDefault();
+            const taskId = event.target.getAttribute('data-task-id');
+            const parentElementId = event.target.getAttribute('parent-id');
+            const deleteStatus = await deleteTaskRequest(taskId);
+             if (!deleteStatus) {  x
+                return;
+            } 
+            document.querySelector(`#${parentElementId}`).remove();
+        });
+    
+        // Append elements
+        taskElement.appendChild(taskNameSpan); // Checkmark or empty
+        linksContainer.appendChild(editLink);
+        linksContainer.appendChild(deleteLink);
+        
+        taskElement.appendChild(linksContainer); // Add links to the task element
+        tasksContainer.appendChild(taskElement);
+    }); 
+}

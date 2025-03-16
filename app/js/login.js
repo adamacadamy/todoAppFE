@@ -40,15 +40,12 @@ document.addEventListener('DOMContentLoaded', () => {
             showFormError('Please fix the errors below', loginForm);
             return;
         }
- 
-        const method = 'POST'; 
-        const headers = { 'Content-Type': 'application/json' };
-        const body = JSON.stringify({ username , password });
-        const request_config = { method, headers, body };
+  
+        const payload = { username , password }
 
         try {
 
-            const authStatus = await authRequest(request_config);
+            const authStatus = await authRequest(payload);
             
             if (!authStatus) {   
                 showFormError('Invalid credentials' , loginForm );
