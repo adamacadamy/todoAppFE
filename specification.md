@@ -70,20 +70,20 @@ graph TD;
 
 ## 1.4 Forms
 
-#### 1.4.1 Login Form
+### 1.4.1 Login Form
 
 - Username (Input Text)
 - Password (Input Password)
 - Submit Button
 
-#### 1.4.2 Registration Form
+### 1.4.2 Registration Form
 
 - Username (Input Text)
 - Email (Input Text)
 - Password (Input Password)
 - Submit Button
 
-#### 1.4.3 Task Form
+### 1.4.3 Task Form
 
 - Task (Input Text)
 - Is Completed (Checkbox)
@@ -143,7 +143,13 @@ todoAppFE/
 │   │   └── style.css        # general style file
 │   ├── js/                  # js files location
 │   │   └── app.js           # general js file  
-│   └── index.html           # home page html file
+│   ├── 404.html             # 404 error page    
+│   ├── dashboard.html       # dashboard page       
+│   ├── edit_todo.html       # edit todos page    
+│   ├── home.html            # home page          
+│   ├── index.html           # sever default page that redarects to home page         
+│   ├── login.html           # sever login page     
+│   └── register.html        # registeration page
 ├── .gitmodules              # for git sub module registry
 ├── live-server.config       # live server  configuration
 ├── package.json             # node application configuration and required app regitry manager

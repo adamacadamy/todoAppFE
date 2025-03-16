@@ -1,0 +1,24 @@
+{
+    "app": {
+        "home.html": "",
+        "404.html": "",
+        "login.html": "",
+        "register.html": "",
+        "dashboard.html": "",
+        "edit_todo.html": "", 
+        "css": {
+            "style.css": ""
+        },
+        "js": {
+            "app.js": ""
+        },
+        "assets": {
+            "images": {}
+        }
+    },
+    ".vscode":{
+        "settings.json": "",
+        "launch.json": ""
+    },
+    "README.md": ""
+}
