@@ -121,17 +121,17 @@ const getTakRequest = async (taskId) => {
             'Content-Type': 'application/json',
             'Authorization': authToken
         },
-        credentials: "include",  // Send cookies if needed // Ensure CORS is enabled
-        mode:'no-cors'
+        mode: "cors",  // Ensure CORS is enabled
+        credentials: "include"  // Send cookies if needed
     };
 
-    const response = await fetch(`${window.env.BACKEND_URLS.TASK_URL}/${taskId}`, requestConfig);
+    const response = await fetch(`${window.env.BACKEND_URLS.TASK_URL}${taskId}`, requestConfig);
     if (!response.ok) {
         throw new Error('Task retrieval failed');
     }
     const data = await response.json();
     console.log('Response:', data);
-    return data.task;
+    return data;
 }
 
 const updateTaskRequest = async (taskId, payload) => { 

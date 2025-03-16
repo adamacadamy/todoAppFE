@@ -124,8 +124,10 @@ const fetchAndPapulateTasks = async () => {
     
     const tasks = await getTasksRequest();
 
+    const tasksContainer = document.querySelector('.tasks-list');
+    tasksContainer.innerHTML = ''; // Clear the existing tasks
     tasks.forEach((task) => {
-        const tasksContainer = document.querySelector('.tasks-list');
+
         const taskElement = document.createElement('li');
         const taskNameSpan = document.createElement('span');
         const linksContainer = document.createElement('span');
@@ -167,4 +169,13 @@ const fetchAndPapulateTasks = async () => {
         taskElement.appendChild(linksContainer); // Add links to the task element
         tasksContainer.appendChild(taskElement);
     }); 
+}
+
+const papulateTaskForm = async (taskId) => {
+    const task = await getTakRequest(taskId);
+    const taskNameElement = document.querySelector('#task');
+    const isTakenElement = document.querySelector('#is_completed');
+    console.log('Task:', task);
+    taskNameElement.value = task.task;
+    isTakenElement.checked = task.is_completed;
 }

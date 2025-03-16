@@ -2,9 +2,12 @@
 
  
 
-document.addEventListener('DOMContentLoaded', () => { 
+document.addEventListener('DOMContentLoaded', async () => { 
     const taskId = getQueryParam('id');
     
+    if (taskId) {
+        await papulateTaskForm(taskId);
+    }
     const taskForm = document.querySelector('#todo-form'); 
     const fieldsToValidate = [{ 'field': 'task', "validator": validateText }];
 
