@@ -56,8 +56,7 @@ const registrationRequest = async (paylaod) => {
             'Content-Type': 'application/json', 
         },
         body: JSON.stringify(payload),
-        credentials: "include",  // Send cookies if needed // Ensure CORS is enabled
-        mode:'no-cors'
+
     };
     
     const response = await fetch(window.env.BACKEND_URLS.REGISTER_URL, requestConfig);
