@@ -98,22 +98,33 @@ const showValidationMessage = (element, validation) => {
     messageElement.classList.toggle('error', !validation.isValid);
 }
  
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () =>{
     const logoutLink = document.querySelector('#logout-link');
-
-    if (logoutLink) {
-        logoutLink.addEventListener('click', async (event) => {
+    const  nameSpan = document.querySelector("#name-span");
+    
+    if(logoutLink){
+        logoutLink.addEventListener('click', async (event) =>{
             event.preventDefault();
+
             console.log('logout clicked');
             const logoutStatus = await logoutRequest();
-            if (!logoutStatus) {  
+            if(!logoutStatus){
                 return;
-            }             
+            }
+            
             window.location.href =  window.env.PAGES.LOGIN;
 
         });
-     }
-});
+    }
+    if(logoutLink){
+        const username = localStorage.getItem("username") || "";
+        const welcomeLabel = `Welcome, ${username}!`;
+
+        nameSpan.textContent = welcomeLabel;
+    }
+ 
+
+ });
  // Function to get the query parameter value by name
 const getQueryParam = (param) => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -155,7 +166,7 @@ const fetchAndPapulateTasks = async () => {
             const taskId = event.target.getAttribute('data-task-id');
             const parentElementId = event.target.getAttribute('parent-id');
             const deleteStatus = await deleteTaskRequest(taskId);
-             if (!deleteStatus) {  x
+             if (!deleteStatus) {  
                 return;
             } 
             document.querySelector(`#${parentElementId}`).remove();
